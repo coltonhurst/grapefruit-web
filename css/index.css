@@ -1,0 +1,11 @@
+body {
+  background-color: #D3D3D3;
+}
+
+.member-post-mouseover {
+  border: 1px solid black;
+}
+
+.member-post-mouseout {
+  border: none;
+}
