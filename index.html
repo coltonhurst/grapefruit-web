@@ -52,7 +52,7 @@
     </div>
   </nav>
 
-  <!-- About Modal -->
+  <!-- ABOUT MODAL -->
   <div class="modal fade" id="about-modal" tabindex="-1" aria-labelledby="about-modal-label" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -77,7 +77,7 @@
     </div>
   </div>
 
-  <!-- Login Modal -->
+  <!-- LOGIN MODAL -->
   <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="login-modal-label" aria-hidden="true">
     <div class="modal-dialog">
       <form class="modal-content">
@@ -92,19 +92,19 @@
             <div id="email-error-messages" class="form-text"></div>
           </div>
           <div class="mb-3">
-            <label for="login-password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="login-password">
+            <label for="login-modal-password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="login-modal-password">
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary">Login</button>
+          <button id="login-modal-btn" type="button" class="btn btn-primary">Login</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Sign Up Modal -->
+  <!-- SIGN UP MODAL -->
   <div class="modal fade" id="signup-modal" tabindex="-1" aria-labelledby="signup-modal-label" aria-hidden="true">
     <div class="modal-dialog">
       <form class="modal-content">
@@ -125,13 +125,13 @@
             <div id="email-error-messages" class="form-text"></div>
           </div>
           <div class="mb-3">
-            <label for="signup-password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="signup-password">
+            <label for="signup-modal-password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="signup-modal-password">
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary">Sign Up</button>
+          <button id="signup-modal-btn" type="button" class="btn btn-primary">Sign Up</button>
         </div>
       </form>
     </div>
@@ -182,7 +182,7 @@
 
     <!-- JS -->
     <script src="./js/bootstrap.min.js"></script>
-    <script src="./js/index.js"></script>
+    <script type="module" src="./js/index.js"></script>
 </body>
 
 </html>
