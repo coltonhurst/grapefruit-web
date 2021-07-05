@@ -8,7 +8,11 @@ function login() {
     const email = document.getElementById("login-modal-email").value.trim();
     const password = document.getElementById("login-modal-password").value.trim();
 
-    apiHandler.login(email, password);
+    const loginSuccess = apiHandler.login(email, password);
+
+    if (loginSuccess) {
+        window.location = '/account.html';
+    }
 }
 
 function signup() {
@@ -16,5 +20,9 @@ function signup() {
     const email = document.getElementById("signup-modal-email").value.trim();
     const password = document.getElementById("signup-modal-password").value;
 
-    apiHandler.signup(username, email, password);
+    const signupSuccess = apiHandler.signup(username, email, password);
+
+    if (signupSuccess) {
+        window.location = '/account.html';
+    }
 }

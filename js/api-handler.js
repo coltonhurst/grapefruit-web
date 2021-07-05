@@ -8,6 +8,8 @@ function login(email, password) {
     console.log("Login attempt:");
     console.log(email);
     console.log(password);
+
+    return true; // simulate working login
 }
 
 /*
@@ -19,6 +21,8 @@ function signup(username, email, password) {
     console.log(username);
     console.log(email);
     console.log(password);
+
+    return true; // simulate working signup
 }
 
 export { login, signup };

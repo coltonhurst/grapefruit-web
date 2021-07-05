@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Grapefruit Forum Account page">
+  <meta name="author" content="Colton Hurst">
+  <title>Grapefruit Account Page</title>
+  <link rel="shortcut icon" type="image/jpg" href="./images/favicon.ico" />
+
+  <!-- CSS -->
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/index.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+      <!-- site title -->
+      <div>
+        <img src="./images/grapefruit-header.png" width="30" height="30" class="d-inline-block align-top header-image"
+          alt="Grapefruit header">
+        <a class="navbar-brand" href="./index.html">Grapefruit</a>
+      </div>
+      <!-- hamburger menu -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- nav options -->
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#about-modal">About</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <!-- nav account section-->
+          <div>
+            <!-- user account button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                @colton
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Separated link</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ABOUT MODAL -->
+  <div class="modal fade" id="about-modal" tabindex="-1" aria-labelledby="about-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="about-modal-label">About</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Grapefruit is open source forum software by <a href="https://www.coltonhurst.com">Colton Hurst</a>. You can
+            find the source code <a href="https://github.com/grapefruit-forum">here</a>. It started as an <a
+              href="https://en.wikipedia.org/wiki/Independent_study">independent study</a> project at <a
+              href="https://www.odu.edu/">Old Dominion University</a> under <a
+              href="https://www.cs.odu.edu/~tkennedy/summer21/">Professor Thomas Kennedy</a>, with a main goal of
+            studying the <a href="https://rust-lang.org">Rust programming language</a>, using it in a live project.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="login-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="login-modal-label">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="login-modal-email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="login-modal-email" aria-describedby="email-error-messages">
+            <div id="email-error-messages" class="form-text"></div>
+          </div>
+          <div class="mb-3">
+            <label for="login-modal-password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="login-modal-password">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="login-modal-btn" type="button" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SIGN UP MODAL -->
+  <div class="modal fade" id="signup-modal" tabindex="-1" aria-labelledby="signup-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signup-modal-label">Sign Up</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="signup-modal-username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="signup-modal-username"
+              aria-describedby="username-error-messages">
+            <div id="username-error-messages" class="form-text"></div>
+          </div>
+          <div class="mb-3">
+            <label for="signup-modal-email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="signup-modal-email" aria-describedby="email-error-messages">
+            <div id="email-error-messages" class="form-text"></div>
+          </div>
+          <div class="mb-3">
+            <label for="signup-modal-password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="signup-modal-password">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="signup-modal-btn" type="button" class="btn btn-primary">Sign Up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <main class="container col-md-8 offset-md-2">
+
+    <h1>Your Account</h1>
+
+    <div id="account-details" class="member-post bg-light p-2 rounded">
+      <p>
+        Your account details go here
+      </p>
+    </div>
+
+    <!-- JS -->
+    <script src="./js/bootstrap.min.js"></script>
+    <script type="module" src="./js/account.js"></script>
+</body>
+
+</html>
