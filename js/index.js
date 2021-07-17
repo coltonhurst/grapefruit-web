@@ -8,11 +8,13 @@ function login() {
     const email = document.getElementById("login-modal-email").value.trim();
     const password = document.getElementById("login-modal-password").value.trim();
 
-    const loginSuccess = apiHandler.login(email, password);
-
-    if (loginSuccess) {
-        window.location = '/account.html';
-    }
+    const loginSuccess = apiHandler.login(email, password, (data) => {
+        // on success
+        console.log('success!', data);
+    }, (err) => {
+        // on failure
+        console.log('error!', err);
+    });
 }
 
 function signup() {
