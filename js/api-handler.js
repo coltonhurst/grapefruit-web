@@ -1,39 +1,60 @@
-/* API HANDLER MODULE */
+/*
+    API HANDLER MODULE
+
+    When logged in, the encoded email and password should be
+    saved in localStorage under the key "Authorization". This
+    will be used for all calls so the user does not have to
+    continually authenticate themselves. Upon logging out,
+    this should be cleared. Doing it this way also allows
+    the user to remain logged in even if they leave and come back.
+
+    If the API returns an HTTP status of 401 or 403, the logout()
+    function will be called, forcing the user to sign in again.
+*/
 
 const API_URL_V1 = 'http://127.0.0.1:8000/v1/';
 
-/*
-    This function will communicate with the API
-    regarding logging in.
-    It requires an email, password, successFunc,
-    and failureFunc to call at the resolution of the call.
-*/
 function login(email, password, successFunc, failureFunc) {
-
-    const url = API_URL_V1 + 'member/bd8a8c6a-701b-4efb-9fb0-d0220497c613';
+    const url = API_URL_V1 + 'member';
+    const authHeader = "Basic " + btoa(username + ":" + password);
 
     fetch(url).then(function (response) {
-        // The API call was successful!
+        localStorage.setItem("Authorization", authHeader);
         successFunc(response.json());
     }).catch(function (err) {
-        // The call failed :(
         failureFunc(err);
     });
-
 }
 
-/*
-    This function will communicate with the API
-    regarding signing up.
-*/
-function signup(username, email, password) {
-    console.log("Signup attempt:");
-    console.log(username);
-    console.log(email);
-    console.log(password);
+function signup(username, email, password, successFunc, failureFunc) {
+    const url = API_URL_V1 + 'member';
+    const body = "";
+    const authHeader = "Basic " + btoa(username + ":" + password);
 
-    return true; // simulate working signup
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader
+        }
+    };
+
+    fetch(url, options).then(function (response) {
+        localStorage.setItem("Authorization", authHeader);
+        successFunc(response.json());
+    }).catch(function (err) {
+        failureFunc(err);
+    });
 }
 
+function logout() {
+    localStorage.removeItem("Authorization");
+    window.location = "/index.html";
+}
+
+function getPosts() {
+
+}
 
 export { login, signup };
