@@ -14,22 +14,37 @@
 
 const API_URL_V1 = 'http://127.0.0.1:8000/v1/';
 
+/* Facilitates login */
 function login(email, password, successFunc, failureFunc) {
     const url = API_URL_V1 + 'member';
-    const authHeader = "Basic " + btoa(username + ":" + password);
+    const authHeader = "Basic " + btoa(email + ":" + password);
 
-    fetch(url).then(function (response) {
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader
+        }
+    };
+
+    fetch(url, options).then(function (response) {
+        // success
         localStorage.setItem("Authorization", authHeader);
         successFunc(response.json());
     }).catch(function (err) {
+        // failure
         failureFunc(err);
     });
 }
 
+/* Facilitates signup */
 function signup(username, email, password, successFunc, failureFunc) {
     const url = API_URL_V1 + 'member';
-    const body = "";
-    const authHeader = "Basic " + btoa(username + ":" + password);
+    const body = {
+        email: email,
+        username: username
+    };
+    const authHeader = "Basic " + btoa(email + ":" + password);
 
     const options = {
         method: 'POST',
@@ -41,20 +56,32 @@ function signup(username, email, password, successFunc, failureFunc) {
     };
 
     fetch(url, options).then(function (response) {
+        // success
         localStorage.setItem("Authorization", authHeader);
         successFunc(response.json());
     }).catch(function (err) {
+        // failure
         failureFunc(err);
     });
 }
 
+/* Facilitates logout */
 function logout() {
     localStorage.removeItem("Authorization");
     window.location = "/index.html";
 }
 
-function getPosts() {
+/* Facilitates getting the posts */
+function getPosts(successFunc, failureFunc) {
+    const url = API_URL_V1 + 'posts';
 
+    fetch(url).then(function (response) {
+        // success
+        successFunc(response.json());
+    }).catch(function (err) {
+        // failure
+        failureFunc(err);
+    });
 }
 
-export { login, signup };
+export { login, signup, getPosts };

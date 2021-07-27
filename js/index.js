@@ -85,9 +85,6 @@ function login() {
     const email = document.getElementById("login-modal-email").value.trim();
     const password = document.getElementById("login-modal-password").value;
 
-    console.log("login attempt");
-    return;
-
     apiHandler.login(email, password, (data) => {
         // on success
         console.log("login success!", data);
@@ -108,9 +105,6 @@ function signup() {
     const username = document.getElementById("signup-modal-username").value.trim();
     const email = document.getElementById("signup-modal-email").value.trim().toLowerCase();
     const password = document.getElementById("signup-modal-password").value;
-
-    console.log("signup attempt");
-    return;
 
     apiHandler.signup(username, email, password, (data) => {
         // on success
