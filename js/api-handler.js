@@ -217,7 +217,7 @@ function deletePost(postGuid, successFunc, failureFunc) {
     });
 }
 
-/* Facilitates creating a post */
+/* Facilitates creating a comment */
 function createComment(commentBody, successFunc, failureFunc) {
     const url = API_URL_V1 + 'comments';
     const authHeader = localStorage.getItem("Authorization");
@@ -244,7 +244,7 @@ function createComment(commentBody, successFunc, failureFunc) {
     });
 }
 
-/* Facilitates updating a post */
+/* Facilitates updating a comment */
 function updateComment(commentGuid, newCommentBody, successFunc, failureFunc) {
     const url = API_URL_V1 + 'comments';
     const authHeader = localStorage.getItem("Authorization");
@@ -296,7 +296,7 @@ function getComments(postGuids, successFunc, failureFunc) {
     });
 }
 
-/* Facilitates deleting a post */
+/* Facilitates deleting a comment */
 function deleteComment(commentGuid, successFunc, failureFunc) {
     const url = API_URL_V1 + 'comments';
     const authHeader = localStorage.getItem("Authorization");
