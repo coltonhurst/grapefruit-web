@@ -107,7 +107,6 @@ function login() {
 
 /* Signup attempt */
 function signup() {
-
   if (!validateSignupForm()) {
     return;
   }
@@ -117,12 +116,19 @@ function signup() {
   const password = document.getElementById("signup-modal-password").value;
 
   apiHandler.signup(username, email, password, (data) => {
-    // on success
-    console.log("signup success!", data);
-    window.location = "/account.html";
-  }, (err) => {
-    // on failure
-    console.log("signup error!", err);
+    if (isNullOrWhitespace(data.error)) {
+      localStorage.setItem("member", JSON.stringify({
+        "authorization": data.authorization,
+        "username": data.username,
+        "email": data.email,
+        "guid": data.guid
+      }));
+      handleAccountButton();
+      window.location = "/index.html";
+    } else {
+      handleAccountButton();
+      showLoginError(data.error);
+    }
   });
 }
 

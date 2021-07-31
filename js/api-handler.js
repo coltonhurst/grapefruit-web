@@ -40,10 +40,11 @@
 const API_URL_V1 = 'http://127.0.0.1:8000/v1/';
 
 /* Facilitates signup */
-function signup(username, email, password, successFunc, failureFunc) {
+function signup(username, email, password, actionFunc) {
   const url = API_URL_V1 + 'member';
-  const authHeader = "Basic " + btoa(email + ":" + password);
+  const authHeader = btoa(email + ":" + password);
   const body = {
+    authorization: authHeader,
     email: email,
     username: username
   };
@@ -51,19 +52,19 @@ function signup(username, email, password, successFunc, failureFunc) {
   const options = {
     method: 'POST',
     body: JSON.stringify(body),
-    headers: {
+    /*headers: {
       'Content-Type': 'application/json',
       'Authorization': authHeader
-    }
+    }*/
   };
 
   fetch(url, options).then(function (response) {
-    // success
-    localStorage.setItem("Authorization", authHeader);
-    successFunc(response.json());
+    return response.json();
+  }).then((response) => {
+    actionFunc(response);
   }).catch(function (err) {
     // failure
-    failureFunc(err);
+    console.log(err);
   });
 }
 
