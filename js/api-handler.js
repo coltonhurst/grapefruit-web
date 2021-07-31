@@ -88,13 +88,7 @@ function login(email, password, actionFunc) {
   fetch(url, options).then(function (response) {
     return response.json();
   }).then((response) => {
-    localStorage.setItem("member", JSON.stringify({
-      "authorization": response.authorization,
-      "username": response.username,
-      "email": response.email,
-      "guid": response.guid
-    }));
-    actionFunc(response)
+    actionFunc(response);
   }).catch(function (err) {
     // failure
     console.log(err);

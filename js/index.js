@@ -22,6 +22,9 @@ let signupFormIsErrorFree = true;
 document.getElementById("login-modal-error").style.visibility = 'hidden';
 document.getElementById("signup-modal-error").style.visibility = 'hidden';
 
+/* Show user account button if logged in */
+handleAccountButton();
+
 /* Clear form data */
 clearFormData();
 
@@ -87,8 +90,16 @@ function login() {
 
   apiHandler.login(email, password, (data) => {
     if (isNullOrWhitespace(data.error)) {
-      window.location = "/account.html";
+      localStorage.setItem("member", JSON.stringify({
+        "authorization": data.authorization,
+        "username": data.username,
+        "email": data.email,
+        "guid": data.guid
+      }));
+      handleAccountButton();
+      window.location = "/index.html";
     } else {
+      handleAccountButton();
       showLoginError(data.error);
     }
   });
@@ -204,4 +215,40 @@ function hideSignupError() {
 */
 function isNullOrWhitespace(data) {
   return data == undefined || data == null || data.trim() == "";
+}
+
+/* */
+function handleAccountButton() {
+  if (localStorage.getItem("member") != undefined && localStorage.getItem("member") != null) {
+    let guid = JSON.parse(localStorage.getItem("member")).guid;
+
+    if (guid != undefined && guid != null && guid.length > 0) {
+      showUserAccountButton(JSON.parse(localStorage.getItem("member")).username);
+    } else {
+      showUserLoginButton();
+    }
+  } else {
+    showUserLoginButton();
+  }
+}
+
+/* Show the user account button and hide the login / signup button */
+function showUserAccountButton(username) {
+  console.log("show account button");
+  document.getElementById("nav-not-logged-in").style.visibility = "collapse";
+  document.getElementById("nav-not-logged-in").style.display = "none";
+  document.getElementById("nav-logged-in").style.visibility = "visible";
+  document.getElementById("nav-logged-in").style.display = "block";
+
+  document.getElementById("nav-logged-in-button").innerHTML = username;
+}
+
+function showUserLoginButton() {
+  console.log("show login button");
+  document.getElementById("nav-logged-in").style.visibility = "collapse";
+  document.getElementById("nav-logged-in").style.display = "none";
+  document.getElementById("nav-not-logged-in").style.visibility = "visible";
+  document.getElementById("nav-not-logged-in").style.display = "block";
+
+  document.getElementById("nav-logged-in-button").innerHTML = "";
 }

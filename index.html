@@ -41,11 +41,15 @@
         </ul>
         <form class="d-flex">
           <!-- nav account section-->
-          <div>
+          <div id="nav-not-logged-in">
             <button id="login-btn" class="btn btn-secondary login-btn" type="button" data-bs-toggle="modal"
               data-bs-target="#login-modal">Login</button>
             <button id="signup-btn" class="btn btn-primary login-btn" type="button" data-bs-toggle="modal"
               data-bs-target="#signup-modal">Sign Up</button>
+          </div>
+          <!-- user account button -->
+          <div class="btn-group" id="nav-logged-in">
+            <button type="button" class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" id="nav-logged-in-button"></button>
           </div>
         </form>
       </div>
