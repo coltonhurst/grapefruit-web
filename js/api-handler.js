@@ -2,11 +2,12 @@
     API HANDLER MODULE
 
     When logged in, the encoded email and password should be
-    saved in localStorage under the key "Authorization". This
+    saved in localStorage under the member object. This
     will be used for all calls so the user does not have to
     continually authenticate themselves. Upon logging out,
     this should be cleared. Doing it this way also allows
     the user to remain logged in even if they leave and come back.
+    User data should be stored in the 'member' object in local storage.
 
     If the API returns an HTTP status of 401 or 403, the logout()
     function will be called, forcing the user to sign in again.
@@ -85,10 +86,14 @@ function login(email, password, actionFunc) {
   };
 
   fetch(url, options).then(function (response) {
-    // success
-    localStorage.setItem("Authorization", authHeader);
     return response.json();
   }).then((response) => {
+    localStorage.setItem("member", JSON.stringify({
+      "authorization": response.authorization,
+      "username": response.username,
+      "email": response.email,
+      "guid": response.guid
+    }));
     actionFunc(response)
   }).catch(function (err) {
     // failure
@@ -127,6 +132,7 @@ function updateMember(newEmail, newPassword, successFunc, failureFunc) {
 /* Facilitates logout */
 function logout() {
   localStorage.removeItem("Authorization");
+  localStorage.removeItem("member");
   window.location = "/index.html";
 }
 
