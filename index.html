@@ -48,8 +48,9 @@
               data-bs-target="#signup-modal">Sign Up</button>
           </div>
           <!-- user account button -->
-          <div class="btn-group" id="nav-logged-in">
-            <button type="button" class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" id="nav-logged-in-button"></button>
+          <div id="nav-logged-in">
+            <button type="button" class="btn btn-secondary login-btn" id="nav-log-out-button">Logout</button>
+            <button type="button" class="btn btn-primary login-btn" id="nav-logged-in-button" data-bs-toggle="modal" data-bs-target="#account-modal"></button>
           </div>
         </form>
       </div>
@@ -76,6 +77,34 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER ACCOUNT MODAL -->
+  <div class="modal fade" id="account-modal" tabindex="-1" aria-labelledby="account-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="account-modal-label">Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="account-modal-email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="account-modal-email" aria-describedby="account-email-error-messages">
+            <div id="account-email-error-messages" class="form-text"></div>
+          </div>
+          <div class="mb-3">
+            <label for="account-modal-password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="account-modal-password">
+          </div>
+        </div>
+        <div class="alert alert-danger" id="account-modal-error" role="alert"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="account-modal-btn">Update</button>
         </div>
       </div>
     </div>

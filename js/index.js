@@ -17,10 +17,12 @@ On start execution code
 */
 let loginFormIsErrorFree = true;
 let signupFormIsErrorFree = true;
+let accountFormIsErrorFree = true;
 
 /* Hide any error messages by default */
 document.getElementById("login-modal-error").style.visibility = 'hidden';
 document.getElementById("signup-modal-error").style.visibility = 'hidden';
+document.getElementById("account-modal-error").style.visibility = 'hidden';
 
 /* Show user account button if logged in */
 handleAccountButton();
@@ -31,10 +33,9 @@ clearFormData();
 /* Set up the event listeners */
 document.getElementById("login-modal-btn").addEventListener("click", login);
 document.getElementById("signup-modal-btn").addEventListener("click", signup);
-document.getElementById("login-modal-email").oninput = function () {
-  if (!loginFormIsErrorFree)
-    hideLoginError();
-};
+document.getElementById("account-modal-btn").addEventListener("click", updateAccount);
+document.getElementById("nav-log-out-button").addEventListener("click", logout);
+
 //document.getElementById("login-btn").addEventListener("click", loginFocus);
 //document.getElementById("signup-btn").addEventListener("click", signupFocus);
 
@@ -61,6 +62,14 @@ document.getElementById("signup-modal-email").oninput = function () {
 document.getElementById("signup-modal-password").oninput = function () {
   if (!signupFormIsErrorFree)
     hideSignupError();
+};
+document.getElementById("account-modal-email").oninput = function () {
+  if (!accountFormIsErrorFree)
+    hideAccountError();
+};
+document.getElementById("account-modal-password").oninput = function () {
+  if (!accountFormIsErrorFree)
+    hideAccountError();
 };
 
 /*
@@ -103,6 +112,22 @@ function login() {
       showLoginError(data.error);
     }
   });
+}
+
+function logout() {
+  apiHandler.logout();
+}
+
+/* Update the user account */
+function updateAccount() {
+  if (!validateAccountForm()) {
+    return;
+  }
+
+  const email = document.getElementById("account-modal-email").value.trim().toLowerCase();
+  const password = document.getElementById("account-modal-password").value;
+
+  //apiHandler.updateAccount();
 }
 
 /* Signup attempt */
@@ -172,6 +197,24 @@ function validateSignupForm() {
   return true;
 }
 
+/* Validate the account form */
+function validateAccountForm() {
+  const email = document.getElementById("account-modal-email").value.trim();
+  const password = document.getElementById("account-modal-password").value;
+
+  if (!validateEmail(email)) {
+    showAccountError("Please enter a valid email address.");
+    return false;
+  } else if (password.length == 0) {
+    showAccountError("Please enter a password.");
+    return false;
+  }
+
+  hideAccountError();
+
+  return true;
+}
+
 /* Validate the email */
 function validateEmail(email) {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -215,6 +258,18 @@ function hideSignupError() {
   signupModalError.style.visibility = 'hidden';
   signupFormIsErrorFree = false;
 }
+function showAccountError(errorMessage) {
+  let accountModalError = document.getElementById("account-modal-error");
+  accountModalError.innerHTML = errorMessage;
+  accountModalError.style.visibility = 'visible';
+  accountFormIsErrorFree = false;
+}
+function hideAccountError() {
+  let accountModalError = document.getElementById("account-modal-error");
+  accountModalError.innerHTML = "";
+  accountModalError.style.visibility = 'hidden';
+  accountFormIsErrorFree = false;
+}
 
 /*
   Returns true if data is undefined, null, or whitespace.
@@ -240,17 +295,17 @@ function handleAccountButton() {
 
 /* Show the user account button and hide the login / signup button */
 function showUserAccountButton(username) {
-  console.log("show account button");
   document.getElementById("nav-not-logged-in").style.visibility = "collapse";
   document.getElementById("nav-not-logged-in").style.display = "none";
   document.getElementById("nav-logged-in").style.visibility = "visible";
   document.getElementById("nav-logged-in").style.display = "block";
 
   document.getElementById("nav-logged-in-button").innerHTML = username;
+  document.getElementById("account-modal-email").value = JSON.parse(localStorage.getItem("member")).email;
+  document.getElementById("account-modal-password").value = "";
 }
 
 function showUserLoginButton() {
-  console.log("show login button");
   document.getElementById("nav-logged-in").style.visibility = "collapse";
   document.getElementById("nav-logged-in").style.display = "none";
   document.getElementById("nav-not-logged-in").style.visibility = "visible";

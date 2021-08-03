@@ -126,7 +126,6 @@ function updateMember(newEmail, newPassword, successFunc, failureFunc) {
 
 /* Facilitates logout */
 function logout() {
-  localStorage.removeItem("Authorization");
   localStorage.removeItem("member");
   window.location = "/index.html";
 }
@@ -395,5 +394,6 @@ export {
   getComments,
   deleteComment,
   likeAPost,
-  likeAComment
+  likeAComment,
+  logout
 };
