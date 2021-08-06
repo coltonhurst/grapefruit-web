@@ -71,6 +71,11 @@ document.getElementById("account-modal-password").oninput = function () {
   if (!accountFormIsErrorFree)
     hideAccountError();
 };
+document.getElementById("account-modal-password-two").oninput = function () {
+  if (!accountFormIsErrorFree) {
+    hideAccountError();
+  }
+};
 
 /*
 --------------------------------------------------------------------------------
@@ -201,12 +206,16 @@ function validateSignupForm() {
 function validateAccountForm() {
   const email = document.getElementById("account-modal-email").value.trim();
   const password = document.getElementById("account-modal-password").value;
+  const passwordTwo = document.getElementById("account-modal-password-two").value;
 
   if (!validateEmail(email)) {
     showAccountError("Please enter a valid email address.");
     return false;
   } else if (password.length == 0) {
     showAccountError("Please enter a password.");
+    return false;
+  } else if (password != passwordTwo) {
+    showAccountError("Passwords must match");
     return false;
   }
 
