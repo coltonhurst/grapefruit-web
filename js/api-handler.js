@@ -97,30 +97,33 @@ function login(email, password, actionFunc) {
 }
 
 /* Facilitates updating member email and password */
-function updateMember(newEmail, newPassword, successFunc, failureFunc) {
-  const url = API_URL_V1 + 'member';
-  const authHeader = localStorage("Authorization");
+function updateMember(newEmail, newPassword, actionFunc) {
+  const url = API_URL_V1 + 'member/' + JSON.parse(localStorage.getItem("member")).guid;
+  const authHeader = JSON.parse(localStorage.getItem("member")).authorization;
   const body = {
+    authorization: authHeader,
     email: newEmail,
-    password: btoa(newPassword)
+    username: JSON.parse(localStorage.getItem("member")).username,
+    guid: JSON.parse(localStorage.getItem("member")).guid,
+    new_authorization: btoa(newEmail + ":" + newPassword)
   };
 
   const options = {
     method: 'PUT',
     body: JSON.stringify(body),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': authHeader
-    }
+    // headers: {
+    //   'Content-Type': 'application/json',
+    //   'Authorization': authHeader
+    // }
   };
 
   fetch(url, options).then(function (response) {
-    // success
-    localStorage.setItem("Authorization", btoa("Basic " + newEmail + ":" + newPassword));
-    successFunc(response.json());
+    return response.json();
+  }).then((response) => {
+    actionFunc(response);
   }).catch(function (err) {
     // failure
-    failureFunc(err);
+    console.log(err);
   });
 }
 

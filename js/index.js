@@ -129,10 +129,22 @@ function updateAccount() {
     return;
   }
 
-  const email = document.getElementById("account-modal-email").value.trim().toLowerCase();
-  const password = document.getElementById("account-modal-password").value;
+  const newEmail = document.getElementById("account-modal-email").value.trim().toLowerCase();
+  const newPassword = document.getElementById("account-modal-password").value;
 
-  //apiHandler.updateAccount();
+  apiHandler.updateMember(newEmail, newPassword, (data) => {
+    if (isNullOrWhitespace(data.error)) {
+      localStorage.setItem("member", JSON.stringify({
+        "authorization": data.authorization,
+        "username": data.username,
+        "email": data.email,
+        "guid": data.guid
+      }));
+      window.location = "/index.html";
+    } else {
+      showAccountError(data.error);
+    }
+  });
 }
 
 /* Signup attempt */
