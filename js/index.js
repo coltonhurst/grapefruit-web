@@ -348,7 +348,8 @@ function getPosts() {
         postsContainer.innerHTML = postsContainer.innerHTML +
         '<div class="member-post bg-light p-2 rounded">' +
         '<h4>' + post.title + '</h4>' +
-        '<div>' + post.body + '</div>' +
+        '<div style="color: grey;">' + post.author + ' on ' + post.date + '</div><br>' +
+        '<div>' + post.body + '</div><br>' +
         '<div><img src="./images/heart.png" alt="" height="25px"> ' + post.likes + '</div>';
         '</div><br>'
       });
