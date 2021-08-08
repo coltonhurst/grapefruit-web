@@ -189,15 +189,24 @@ function updatePost(postGuid, newPostBody, successFunc, failureFunc) {
 }
 
 /* Facilitates getting the posts */
-function getPosts(successFunc, failureFunc) {
+function getPosts(actionFunc) {
   const url = API_URL_V1 + 'posts';
+  const options = {
+    method: 'GET',
+    //body: JSON.stringify(body),
+    // headers: {
+    //   'Content-Type': 'application/json',
+    //   'Authorization': authHeader
+    // }
+  };
 
-  fetch(url).then(function (response) {
-    // success
-    successFunc(response.json());
+  fetch(url, options).then(function (response) {
+    return response.json();
+  }).then((response) => {
+    actionFunc(response);
   }).catch(function (err) {
     // failure
-    failureFunc(err);
+    console.log(err);
   });
 }
 

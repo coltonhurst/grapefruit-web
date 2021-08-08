@@ -35,9 +35,11 @@ document.getElementById("login-modal-btn").addEventListener("click", login);
 document.getElementById("signup-modal-btn").addEventListener("click", signup);
 document.getElementById("account-modal-btn").addEventListener("click", updateAccount);
 document.getElementById("nav-log-out-button").addEventListener("click", logout);
-
 //document.getElementById("login-btn").addEventListener("click", loginFocus);
 //document.getElementById("signup-btn").addEventListener("click", signupFocus);
+
+/* On load, get the posts */
+getPosts();
 
 /*
     When receiving input on the login or signup modal,
@@ -333,4 +335,43 @@ function showUserLoginButton() {
   document.getElementById("nav-not-logged-in").style.display = "block";
 
   document.getElementById("nav-logged-in-button").innerHTML = "";
+}
+
+function getPosts() {
+  const postsContainer = document.getElementById("content");
+  postsContainer.innerHTML = "<h1>Posts</h1>"
+
+  apiHandler.getPosts((data) => {
+    console.log(data);
+    if (isNullOrWhitespace(data.error) && data.posts.length > 0) {
+      data.posts.forEach(post => {
+        postsContainer.innerHTML = postsContainer.innerHTML +
+        '<div class="member-post bg-light p-2 rounded">' +
+        '<h4>' + post.title + '</h4>' +
+        '<div>' + post.body + '</div>' +
+        '<div><img src="./images/heart.png" alt="" height="25px"> ' + post.likes + '</div>';
+        '</div><br>'
+      });
+    } else {
+      postsContainer.innerHTML = postsContainer.innerHTML + "There are no posts!";
+    }
+  });
+
+
+
+
+  /*
+  <h1>Posts</h1>
+  <div class="member-post bg-light p-2 rounded">
+      <h4><a href="#">Untapped potential in Rust's type system</a></h4>
+      <div>
+        <img src="./images/heart.png" alt="" height="25px"> 34
+        <img src="./images/comments.png" alt="" height="25px" style="padding-left: 5px;"> 12
+        <br>
+        tags:
+        <span style="color: purple;">programming</span>
+      </div>
+    </div>
+    <br>
+  */
 }

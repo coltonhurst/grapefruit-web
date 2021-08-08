@@ -9,3 +9,7 @@ body {
 .member-post-mouseout {
   border: none;
 }
+
+.member-post {
+  margin-bottom: 15px;
+}
