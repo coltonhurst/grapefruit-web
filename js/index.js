@@ -379,6 +379,7 @@ function getPosts() {
         const numberOflikes = likedUsers.length < 1 ? 0 : likedUsers.length - 1;
         postCounter++;
         const postId = "post-id-" + postCounter;
+        const postCountId = "postcount-id-" + postCounter;
 
         // if the user has liked the post, make sure the like "heart" is filled in
         if (likedUsers.includes(JSON.parse(localStorage.getItem("member")).guid)) {
@@ -387,16 +388,16 @@ function getPosts() {
           '<h4>' + post.title + '</h4>' +
           '<div style="color: grey;">' + post.author + ' on ' + post.date + '</div><br>' +
           '<div>' + post.body + '</div><br>' +
-          '<div><img src="./images/heart-filled.png" alt="" height="25px" id="' + postId + '"> ' + numberOflikes + '</div>' +
+          '<div><img src="./images/heart-filled.png" alt="" height="25px" id="' + postId + '"> ' + '<span id="' + postCountId + '">' + numberOflikes + '</span>' + '</div>' +
           '</div><br>';
           //document.getElementById(postId).addEventListener("click", likePost(post.guid, "unlike"));
           document.getElementById(postId).addEventListener("click", () => {
             const source = document.getElementById(postId).src.split("/")[document.getElementById(postId).src.split("/").length - 1];
 
             if (source == "heart-filled.png") {
-              likePost(post.guid, postId, "unlike");
+              likePost(post.guid, postId, postCountId, "unlike");
             } else if (source == "heart.png") {
-              likePost(post.guid, postId, "like");
+              likePost(post.guid, postId, postCountId, "like");
             }
           });
         } 
@@ -407,15 +408,15 @@ function getPosts() {
           '<h4>' + post.title + '</h4>' +
           '<div style="color: grey;">' + post.author + ' on ' + post.date + '</div><br>' +
           '<div>' + post.body + '</div><br>' +
-          '<div><img src="./images/heart.png" alt="" height="25px" id="' + postId + '"> ' + numberOflikes + '</div>' +
+          '<div><img src="./images/heart.png" alt="" height="25px" id="' + postId + '"> ' + '<span id="' + postCountId + '">' + numberOflikes + '</span>' + '</div>' +
           '</div><br>';
           document.getElementById(postId).addEventListener("click", () => {
             const source = document.getElementById(postId).src.split("/")[document.getElementById(postId).src.split("/").length - 1];
 
             if (source == "heart-filled.png") {
-              likePost(post.guid, postId, "unlike");
+              likePost(post.guid, postId, postCountId, "unlike");
             } else if (source == "heart.png") {
-              likePost(post.guid, postId, "like");
+              likePost(post.guid, postId, postCountId, "like");
             }
           });
         }
@@ -427,15 +428,19 @@ function getPosts() {
   });
 }
 
-function likePost(postGuid, postId, action) {
+function likePost(postGuid, postId, postCountId, action) {
   console.log(postGuid);
   console.log(postId);
+  console.log(postCountId);
   console.log(action);
+  let currentLikeCount = parseInt(document.getElementById(postCountId).innerHTML);
 
   if (action == "like") {
     document.getElementById(postId).src = "./images/heart-filled.png";
+    document.getElementById(postCountId).innerHTML = currentLikeCount + 1;
   } else if (action == "unlike") {
     document.getElementById(postId).src = "./images/heart.png";
+    document.getElementById(postCountId).innerHTML = currentLikeCount - 1;
   }
 }
 
