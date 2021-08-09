@@ -346,29 +346,36 @@ function deleteComment(commentGuid, successFunc, failureFunc) {
   });
 }
 
+/*
+
+  post_guid: String,
+  like_guids: String,
+
+*/
+
 /* Facilitates creating a post */
-function likeAPost(postGuid, successFunc, failureFunc) {
-  const url = API_URL_V1 + 'likepost';
-  const authHeader = localStorage.getItem("Authorization");
+function likePost(postGuid, likeGuids) {
+  const url = API_URL_V1 + 'posts';
   const body = {
-    id: postGuid
+    post_guid: postGuid,
+    like_guids: likeGuids
   };
+
+  console.log("sending");
+  console.log(body);
 
   const options = {
-    method: 'POST',
+    method: 'PUT',
     body: JSON.stringify(body),
-    headers: {
+    /*headers: {
       'Content-Type': 'application/json',
       'Authorization': authHeader
-    }
+    }*/
   };
 
-  fetch(url).then(function (response) {
-    // success
-    successFunc(response.json());
-  }).catch(function (err) {
+  fetch(url, options).catch(function (err) {
     // failure
-    failureFunc(err);
+    console.log(err);
   });
 }
 
@@ -436,7 +443,7 @@ export {
   updateComment,
   getComments,
   deleteComment,
-  likeAPost,
+  likePost,
   likeAComment,
   logout
 };
