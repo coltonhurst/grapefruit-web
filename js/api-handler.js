@@ -134,30 +134,37 @@ function logout() {
 }
 
 /* Facilitates creating a post */
-function createPost(postTitle, postBody, successFunc, failureFunc) {
+function createPost(postTitle, postBody, actionFunc) {
   const url = API_URL_V1 + 'posts';
-  const authHeader = localStorage.getItem("Authorization");
+  const authHeader = JSON.parse(localStorage.getItem("member")).authorization;
   const body = {
+    authorization: authHeader,
+    guid: createUUID(),
+    author: JSON.parse(localStorage.getItem("member")).username,
     title: postTitle,
+    date: getDate(),
     body: postBody,
-    author: atob(authHeader).split(';')[1]
+    likes: "0"
   };
+
+  console.log(body);
 
   const options = {
     method: 'POST',
     body: JSON.stringify(body),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': authHeader
-    }
+    /*headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authHeader
+    }*/
   };
 
-  fetch(url).then(function (response) {
-    // success
-    successFunc(response.json());
+  fetch(url, options).then(function (response) {
+    return response.json();
+  }).then((response) => {
+    actionFunc(response);
   }).catch(function (err) {
     // failure
-    failureFunc(err);
+    console.log(err);
   });
 }
 
@@ -391,6 +398,32 @@ function likeAComment(commentGuid, successFunc, failureFunc) {
     // failure
     failureFunc(err);
   });
+}
+
+/*
+  Do not use this (among other items) in production,
+  only for testing.
+*/
+function createUUID() {
+
+  let dt = new Date().getTime();
+
+  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (dt + Math.random() * 16) % 16 | 0;
+    dt = Math.floor(dt / 16);
+    return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  })
+
+  return uuid;
+}
+
+function getDate() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = (date.getMonth().length === 2) ? (date.getMonth() + 1) : ("0" + (date.getMonth() + 1));
+  const day = (date.getDate().length === 2) ? date.getDate() : ("0" + date.getDate());
+  
+  return year + "-" + month + "-" + day;
 }
 
 export {

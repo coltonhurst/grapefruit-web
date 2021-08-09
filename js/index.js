@@ -18,11 +18,13 @@ On start execution code
 let loginFormIsErrorFree = true;
 let signupFormIsErrorFree = true;
 let accountFormIsErrorFree = true;
+let postFormIsErrorFree = true;
 
 /* Hide any error messages by default */
 document.getElementById("login-modal-error").style.visibility = 'hidden';
 document.getElementById("signup-modal-error").style.visibility = 'hidden';
 document.getElementById("account-modal-error").style.visibility = 'hidden';
+document.getElementById("post-modal-error").style.visibility = 'hidden';
 
 /* Show user account button if logged in */
 handleAccountButton();
@@ -35,6 +37,7 @@ document.getElementById("login-modal-btn").addEventListener("click", login);
 document.getElementById("signup-modal-btn").addEventListener("click", signup);
 document.getElementById("account-modal-btn").addEventListener("click", updateAccount);
 document.getElementById("nav-log-out-button").addEventListener("click", logout);
+document.getElementById("post-modal-btn").addEventListener("click", createPost);
 //document.getElementById("login-btn").addEventListener("click", loginFocus);
 //document.getElementById("signup-btn").addEventListener("click", signupFocus);
 
@@ -45,12 +48,12 @@ getPosts();
     When receiving input on the login or signup modal,
     clear the errors, only if an error is already showing.
 */
-document.getElementById("login-modal-password").oninput = function () {
+document.getElementById("login-modal-email").oninput = function () {
   if (!loginFormIsErrorFree)
     hideLoginError();
 };
-document.getElementById("signup-modal-username").oninput = function () {
-  if (!signupFormIsErrorFree)
+document.getElementById("login-modal-password").oninput = function () {
+  if (!loginFormIsErrorFree)
     hideLoginError();
 };
 document.getElementById("signup-modal-username").oninput = function () {
@@ -74,9 +77,16 @@ document.getElementById("account-modal-password").oninput = function () {
     hideAccountError();
 };
 document.getElementById("account-modal-password-two").oninput = function () {
-  if (!accountFormIsErrorFree) {
+  if (!accountFormIsErrorFree)
     hideAccountError();
-  }
+};
+document.getElementById("post-modal-title").oninput = function () {
+  if (!postFormIsErrorFree)
+    hidePostError();
+};
+document.getElementById("post-modal-body").oninput = function () {
+  if (!postFormIsErrorFree)
+    hidePostError();
 };
 
 /*
@@ -293,6 +303,18 @@ function hideAccountError() {
   accountModalError.style.visibility = 'hidden';
   accountFormIsErrorFree = false;
 }
+function showPostError(errorMessage) {
+  let postModalError = document.getElementById("post-modal-error");
+  postModalError.innerHTML = errorMessage;
+  postModalError.style.visibility = 'visible';
+  postFormIsErrorFree = false;
+}
+function hidePostError() {
+  let postModalError = document.getElementById("post-modal-error");
+  postModalError.innerHTML = "";
+  postModalError.style.visibility = 'hidden';
+  postFormIsErrorFree = false;
+}
 
 /*
   Returns true if data is undefined, null, or whitespace.
@@ -339,12 +361,19 @@ function showUserLoginButton() {
 
 function getPosts() {
   const postsContainer = document.getElementById("content");
-  postsContainer.innerHTML = "<h1>Posts</h1>"
+  postsContainer.innerHTML = '<h1>Posts</h1>';
+
+  if (!isNullOrWhitespace(localStorage.getItem("member")) && !isNullOrWhitespace(JSON.parse(localStorage.getItem("member")).guid)) {
+    postsContainer.innerHTML += '<div><button class="btn btn-primary" id="btn-create-post" data-bs-toggle="modal" data-bs-target="#post-modal">Create a Post</button></div><br>';
+  }
 
   apiHandler.getPosts((data) => {
-    console.log(data);
     if (isNullOrWhitespace(data.error) && data.posts.length > 0) {
-      data.posts.forEach(post => {
+
+      // sort posts... most recent first (descending)
+      let posts = data.posts.sort((a,b) => (a.date < b.date ? 1 : a.date < b.date ? -1 : 0));
+
+      posts.forEach(post => {
         postsContainer.innerHTML = postsContainer.innerHTML +
         '<div class="member-post bg-light p-2 rounded">' +
         '<h4>' + post.title + '</h4>' +
@@ -357,22 +386,40 @@ function getPosts() {
       postsContainer.innerHTML = postsContainer.innerHTML + "There are no posts!";
     }
   });
+}
 
+function createPost() {
+  if (!validatePostForm()) {
+    return;
+  }
 
+  const postTitle = document.getElementById("post-modal-title").value.trim();
+  const postBody = document.getElementById("post-modal-body").value.trim();
 
+  apiHandler.createPost(postTitle, postBody, (data) => {
+    if (isNullOrWhitespace(data.error)) {
+      document.getElementById("post-modal-title").value = "";
+      document.getElementById("post-modal-body").value = "";
+      window.location = "/index.html";
+    } else {
+      showPostError(data.error);
+    }
+  });
+}
 
-  /*
-  <h1>Posts</h1>
-  <div class="member-post bg-light p-2 rounded">
-      <h4><a href="#">Untapped potential in Rust's type system</a></h4>
-      <div>
-        <img src="./images/heart.png" alt="" height="25px"> 34
-        <img src="./images/comments.png" alt="" height="25px" style="padding-left: 5px;"> 12
-        <br>
-        tags:
-        <span style="color: purple;">programming</span>
-      </div>
-    </div>
-    <br>
-  */
+function validatePostForm() {
+  const title = document.getElementById("post-modal-title").value.trim();
+  const body = document.getElementById("post-modal-body").value.trim();
+
+  if (title.length < 1) {
+    showPostError("Please enter a post title!");
+    return false;
+  } else if (body.length < 1) {
+    showPostError("Please enter some post content!");
+    return false;
+  }
+
+  hidePostError();
+
+  return true;
 }
