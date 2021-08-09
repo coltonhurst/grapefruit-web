@@ -397,7 +397,7 @@ function getPosts() {
               const source = document.getElementById(postId).src.split("/")[document.getElementById(postId).src.split("/").length - 1];
   
               if (source == "heart-filled.png") {
-                console.log("clicked on full heartA ");
+                console.log("clicked on full heart A");
                 likePost(post.guid, postId, postCountId, "unlike", likedUsers);
               } else if (source == "heart.png") {
                 console.log("clicked on empty heart A");
@@ -418,7 +418,7 @@ function getPosts() {
           if (isLoggedIn) {
             document.getElementById(postId).addEventListener("click", () => {
               const source = document.getElementById(postId).src.split("/")[document.getElementById(postId).src.split("/").length - 1];
-  
+
               if (source == "heart-filled.png") {
                 console.log("clicked on full heart B");
                 likePost(post.guid, postId, postCountId, "unlike", likedUsers);
@@ -447,7 +447,9 @@ function likePost(postGuid, postId, postCountId, action, likeGuids) {
   if (action == "like") {
     document.getElementById(postId).src = "./images/heart-filled.png";
     document.getElementById(postCountId).innerHTML = currentLikeCount + 1;
-    likedGuidList.push(userGuid);
+    if (!likedGuidList.includes(userGuid)) {
+      likedGuidList.push(userGuid);
+    }
   } else if (action == "unlike") {
     document.getElementById(postId).src = "./images/heart.png";
     document.getElementById(postCountId).innerHTML = currentLikeCount - 1;
