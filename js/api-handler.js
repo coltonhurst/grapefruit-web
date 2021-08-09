@@ -144,10 +144,8 @@ function createPost(postTitle, postBody, actionFunc) {
     title: postTitle,
     date: getDate(),
     body: postBody,
-    likes: "0"
+    likes: ""
   };
-
-  console.log(body);
 
   const options = {
     method: 'POST',

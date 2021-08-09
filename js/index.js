@@ -372,20 +372,71 @@ function getPosts() {
 
       // sort posts... most recent first (descending)
       let posts = data.posts.sort((a,b) => (a.date < b.date ? 1 : a.date < b.date ? -1 : 0));
+      let postCounter = 0;
 
       posts.forEach(post => {
-        postsContainer.innerHTML = postsContainer.innerHTML +
-        '<div class="member-post bg-light p-2 rounded">' +
-        '<h4>' + post.title + '</h4>' +
-        '<div style="color: grey;">' + post.author + ' on ' + post.date + '</div><br>' +
-        '<div>' + post.body + '</div><br>' +
-        '<div><img src="./images/heart.png" alt="" height="25px"> ' + post.likes + '</div>';
-        '</div><br>'
+        let likedUsers = post.likes.split(",");
+        const numberOflikes = likedUsers.length < 1 ? 0 : likedUsers.length - 1;
+        postCounter++;
+        const postId = "post-id-" + postCounter;
+
+        // if the user has liked the post, make sure the like "heart" is filled in
+        if (likedUsers.includes(JSON.parse(localStorage.getItem("member")).guid)) {
+          postsContainer.innerHTML = postsContainer.innerHTML +
+          '<div class="member-post bg-light p-2 rounded">' +
+          '<h4>' + post.title + '</h4>' +
+          '<div style="color: grey;">' + post.author + ' on ' + post.date + '</div><br>' +
+          '<div>' + post.body + '</div><br>' +
+          '<div><img src="./images/heart-filled.png" alt="" height="25px" id="' + postId + '"> ' + numberOflikes + '</div>' +
+          '</div><br>';
+          //document.getElementById(postId).addEventListener("click", likePost(post.guid, "unlike"));
+          document.getElementById(postId).addEventListener("click", () => {
+            const source = document.getElementById(postId).src.split("/")[document.getElementById(postId).src.split("/").length - 1];
+
+            if (source == "heart-filled.png") {
+              likePost(post.guid, postId, "unlike");
+            } else if (source == "heart.png") {
+              likePost(post.guid, postId, "like");
+            }
+          });
+        } 
+        else
+        { // otherwise, the like "heart" is not filled in
+          postsContainer.innerHTML = postsContainer.innerHTML +
+          '<div class="member-post bg-light p-2 rounded">' +
+          '<h4>' + post.title + '</h4>' +
+          '<div style="color: grey;">' + post.author + ' on ' + post.date + '</div><br>' +
+          '<div>' + post.body + '</div><br>' +
+          '<div><img src="./images/heart.png" alt="" height="25px" id="' + postId + '"> ' + numberOflikes + '</div>' +
+          '</div><br>';
+          document.getElementById(postId).addEventListener("click", () => {
+            const source = document.getElementById(postId).src.split("/")[document.getElementById(postId).src.split("/").length - 1];
+
+            if (source == "heart-filled.png") {
+              likePost(post.guid, postId, "unlike");
+            } else if (source == "heart.png") {
+              likePost(post.guid, postId, "like");
+            }
+          });
+        }
+
       });
     } else {
       postsContainer.innerHTML = postsContainer.innerHTML + "There are no posts!";
     }
   });
+}
+
+function likePost(postGuid, postId, action) {
+  console.log(postGuid);
+  console.log(postId);
+  console.log(action);
+
+  if (action == "like") {
+    document.getElementById(postId).src = "./images/heart-filled.png";
+  } else if (action == "unlike") {
+    document.getElementById(postId).src = "./images/heart.png";
+  }
 }
 
 function createPost() {
